@@ -1,0 +1,123 @@
+// 함수 모음
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class UsersDAO {
+
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
+	// 생성자 -> 반복해서 사용할 부분을 줄이기위해 생성자로 빼놓음
+	public UsersDAO() {
+		try {
+			String connurl = "jdbc:postgresql://localhost:5432/CHATTING";
+			String user = "postgres";
+			String password = "1234";
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection(connurl, user, password);
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("연결실패");
+		}
+	}
+	// -----------------------------------------
+	
+//		// 로그인 시작 -------------------------------------------------
+//		public int login(String userId, String userPw) {
+//			String SQL= "SELECT ";
+//			try {
+//				pstmt =conn.prepareStatement(SQL);
+//				pstmt.setString(1, userId);
+//				rs = pstmt.executeQuery();
+//				if(rs.next()) {
+//					if(rs.getString(1).equals(userPw)) {
+//						// 로그인 성공 1을 반환
+//						return 1; 
+//					}
+//					else {
+//						// 비밀번호 불일치 0을 반환
+//						return 0; 
+//					}
+//				}
+//				// 아이디가 없음 -1을 반환
+//				return -1; 
+//			}
+//			catch(Exception e) {
+//				e.printStackTrace();
+//			}
+//			// 데이터베이스 오류 -2를 반환
+//			return -2; 
+//		}
+//		// ------------------------------------------------------------
+//	
+		// 로그인 시작 -------------------------------------------------
+				public int login(String userId, String userPw) {
+					String SQL= "SELECT * FROM USERS WHERE userId = ?, userPw = ?";
+					try {
+						pstmt =conn.prepareStatement(SQL);
+						pstmt.setString(1, userId);
+						rs = pstmt.executeQuery();
+						//
+						if(rs.next()) {
+							
+						}
+						else {
+							// 비밀번호 불일치 0을 반환
+							return 0; 
+						}
+						// 아이디가 없음 -1을 반환
+						return -1; 
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+					// 데이터베이스 오류 -2를 반환
+					return -2; 
+				}
+				// ------------------------------------------------------------
+			
+		
+		// 회원가입 ------------------------------------------------------
+		public int join(UsersVO user) {
+			String SQL = "INSERT INTO USERS (userId, userPw, useable) VALUES (?, ?, ?)";
+			try {
+				// prepareStatement는 sql문을 db에 접근할수 있게 한다.
+				pstmt = conn.prepareStatement(SQL);
+				pstmt.setString(1, user.getUserId());
+				pstmt.setString(2, user.getUserPw());
+				// 최초의 가입자는 무조건 true로 받음
+				// 이후 강퇴 메서드 실행시 false로 변환되도록 한다.
+				pstmt.setBoolean(3, true);				
+				// executeUpdate는 위의sql문에 db를 업데이트해라
+				return pstmt.executeUpdate();			
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			// 가입실패
+			return -1; 
+		}
+		// ------------------------------------------------------------
+		
+		// 아이디 중복 체크 --> true이면 중복된 아이디가 존재 / false이면 사용가능한 아이디
+		public boolean ID_Check(String userId) {
+			try {
+				pstmt = conn.prepareStatement("SELECT * FROM USERS WHERE userId = ?");
+				pstmt.setString(1, userId);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					return false;
+				} else {
+					return true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		// ---------------------------------------------------------------	
+}

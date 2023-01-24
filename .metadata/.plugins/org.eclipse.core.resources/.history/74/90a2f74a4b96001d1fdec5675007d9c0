@@ -1,0 +1,75 @@
+package chatting;
+
+
+public class MultiClientThread extends Thread{
+	private MultiServer ms;
+	private MultiClient mc;
+	//15:35
+	private MultiServerThread mst;
+	public MultiClientThread(MultiClient mc){
+		this.mc = mc;
+	}
+	
+	
+	
+	public void run(){
+		String message = null;
+		String[] receivedMsg = null;
+		boolean isStop = false;
+		while(!isStop){
+			try{
+				
+				message = (String)mc.getOis().readObject();
+				receivedMsg = message.split("#");
+			}catch(Exception e){
+				e.printStackTrace();
+				isStop = true;
+			}
+
+			System.out.println(receivedMsg.length);
+			if(receivedMsg[1].equals("exit")){
+				if(receivedMsg[0].equals(mc.getId())){
+					mc.exit();
+				}else{
+					mc.getJta().append(
+							receivedMsg[0] +"님이 종료 하셨습니다."+
+									System.getProperty("line.separator"));
+					mc.getJta().setCaretPosition(
+							mc.getJta().getDocument().getLength());
+				}
+			//채팅창 비우기 키워드
+			}else if(receivedMsg[1].equals("/clear")) {
+				mc.getJta().setText("  ");
+				System.out.println("use clear");
+			}else if(receivedMsg[1].equals("notice")) {
+            	mc.setNotice(receivedMsg[2]);
+            	System.out.println(receivedMsg[2]);
+            	System.out.println("register notice");
+            }else if(receivedMsg[1].equals("out")) {
+            	System.out.println("drop user");
+            	System.out.println(receivedMsg[2]);
+            	//21:40 > 강퇴기능을 server / client 중 어디에 처리해야할까?
+            	//System.out.println(ms.hash); //> hash를 못불러옴
+            	//MultiServerThread thread = ms.hash.get(receivedMsg[2]); 
+            	//ms.disconnect(thread, receivedMsg[2]);
+            	//mc.dropUser(receivedMsg[2]);
+            	//MultiServerThread thread;
+            	
+            	//mc.setNotice(receivedMsg[2]);
+            	//MultiServerThread thread  = ms.getHash().get(receivedMsg[2]);
+            	//mc.disconnect(this, receivedMsg[2]);
+            } else if (receivedMsg[1].equals("kick")) {
+            	System.out.println(mc.getName() + "Kicked");
+            	mc.exit();
+            }
+			else{    
+				mc.getJta().append(
+						receivedMsg[0] +" : "+receivedMsg[1]+
+						System.getProperty("line.separator"));
+				mc.getJta().setCaretPosition(
+						mc.getJta().getDocument().getLength());
+
+			}			
+		}
+	}
+}

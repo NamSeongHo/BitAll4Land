@@ -1,0 +1,197 @@
+
+// 사용자 인터페이스를 생성,그래픽과 이미지 처리에 필요한 클래스를 포함한 API를 import해준다.
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+// AWT 컴포넌트가 발생시키는 다양한 이벤트를 처리하는데 필요한 요소들을 포함하는 API를 import해준다.
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.io.IOException;
+import java.awt.event.*;
+
+//생성자
+public class Login extends Frame implements ActionListener, KeyListener {
+
+	//------------------------------GUI 구성-------------------------------------- 
+	MultiServer ms;
+	MultiServerThread mst;
+	TextField t1;
+	TextField t2;
+	TextField t3;
+
+	Button b2 = new Button("취 소");
+	Button b1 = new Button("확 인");
+	public Login() {
+		
+		// 패널 객체 생성
+		Panel p1 = new Panel(); 
+		Panel p2 = new Panel();
+		Panel p3 = new Panel();
+
+		// 프레임 레이아웃 설정
+		setLayout(new BorderLayout()); 
+
+		// 패널 레이아웃 설정
+		p1.setLayout(new FlowLayout()); 
+		p2.setLayout(new FlowLayout());
+
+		// 로그인창에 대한 UI설정
+		Label label1 = new Label("아이디 : "); 
+		t1 = new TextField(15);
+		Label label2 = new Label("비밀번호 : ");
+		t2 = new TextField(15);
+		t2.setEchoChar('*');
+
+		// 컴포넌트 이벤트를 처리할 컴포넌트 리스너를 추가.
+		b1.addActionListener(this); 
+		b2.addActionListener(this); 
+		t1.addKeyListener(this);
+		t2.addKeyListener(this);
+
+		// 패널에 각 컴포넌트 배치
+		p1.add(label1); 
+		p1.add(t1);
+		p1.add(b1);
+		p2.add(label2);
+		p2.add(t2);
+		p2.add(b2);
+
+		// 프레임에 각 패널 배치
+		add(BorderLayout.NORTH, p1); 
+		add(BorderLayout.CENTER, p2);
+
+		// Color(R, G, B);
+		// mainColor - 연파랑
+		Color mainColor = new Color(180, 195, 220);
+		// pointColor - 연분홍
+		Color pointColor = new Color(240, 230, 230);
+
+		// 버튼 및 패널의 배경색 설정
+		b1.setBackground(mainColor); 
+		b2.setBackground(mainColor);
+		p1.setBackground(pointColor);
+		p2.setBackground(pointColor);	
+
+		// WindowEvent에 대한 리스너 등록
+		// 창닫기 기능
+		this.addWindowListener(new WindowAdapter() { 
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+	}
+
+	public static void main(String args[]) {
+		Login f = new Login();
+		f.setTitle("채팅 로그인");
+		f.setSize(300, 200);
+		f.setVisible(true);
+	}
+
+
+	//------------------------------이벤트------------------------------------ 
+	//키보드 키 입력시 발생하는 이벤트 정의
+	public void keyPressed(KeyEvent e) {
+
+		if (e.getKeyChar() == KeyEvent.VK_ENTER) // 로그인 정보 입력후 엔터키가 입력되었을때
+		{
+			//
+			if ("".equals(t1.getText())) 
+			{
+				Warn1 w1 = new Warn1();
+				w1.setSize(200, 100);
+				w1.setVisible(true);
+			} else if ("".equals(t2.getText()))
+			{
+				Warn2 w2 = new Warn2();
+				w2.setSize(200,100);
+				w2.setVisible(true);
+			} 
+			else // 모든 입력이 정상일때
+			{
+				MultiClient cc =new MultiClient(t1.getText()); 
+				try { 
+					cc.setTitle("채팅 프로그램");
+					cc.setSize(1000,600);
+					cc.setVisible(true);
+					
+					cc.label1.setText(t1.getText());
+					cc.init();
+					
+				} catch (IOException e1){ 
+					e1.printStackTrace(); 
+					}
+				setVisible(false); // 로그인창을 없앤다.
+			}
+		}
+	}
+
+	public void keyTyped(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
+	}
+
+	//마우스로 동작하는 부분의 이벤트처리
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		Object obj = e.getSource();
+
+		if(obj == b2) {
+			System.exit(0);	
+		}
+
+		if(obj == b1) {
+			if ("".equals(t1.getText())) 	// 유저이름 미입력시 경고창 출력
+			{
+				Warn1 w1 = new Warn1();
+				w1.setSize(200, 100);
+				w1.setVisible(true);
+			} else if ("".equals(t2.getText()))		// 비밀번호 미입력시 경고창 출력
+			{
+				Warn2 w2 = new Warn2();
+				w2.setSize(200,100);
+				w2.setVisible(true);
+			} 
+			else {
+				MultiClient cc =new MultiClient(t1.getText()); try { 
+					
+					//23:10
+	                //ms.hash.put(t1.getText(), mst);
+	                
+					cc.setSize(1000,600);
+					cc.setVisible(true);
+					//ms.hash.put(t1.getText(), mst);
+					//15:35
+					//ms.getHash().put(t1.getText(), mst);
+					//유저 이름으로 등록한 부분을 채팅창에서 알 수 있게함
+					cc.label1.setText(t1.getText());
+					cc.init();
+				} catch (IOException e1) { 
+					e1.printStackTrace(); 
+				}
+				setVisible(false);
+			}
+		}
+	}
+
+
+	//일단 마우스대신 엔터로만 되게해보자 ..	
+	/*
+	 * public void actionPerformed(ActionEvent e) { // 액션이 발생할때 호출되는 메소드 // 키이벤트와
+	 * 동일하게 버튼을 클릭시 수행되는 이벤트 처리 부분으로 내용은 키 이벤트와 같음.↓
+	 * 
+	 * chat = new Chat(); w1 = new Warn1(); w2 = new Warn2(); w3 = new Warn3();
+	 * 
+	 * String str =String.valueOf(e.getActionCommand()); */
+
+}

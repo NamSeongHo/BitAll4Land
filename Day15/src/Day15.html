@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>배경색 바꾸기</title>
+<script language="javascript">
+	function add() {
+		/* var objColor = document.getElementsByName("color"); */
+
+		/* for(var i=0; i<objColor.length; i++){
+		 if(objColor[i].checked) {
+		 document.bgColor = objColor[i].value;
+		 }
+		 }  */
+
+		/* document.bgColor=color; */
+
+		/* var myFrends = window.prompt("친구가 몇 명인가요?","");
+		 for(var i=0; i<parseInt(myFrends); i++){
+		 var testBox = document.createElement("input");
+		 var newLine = document.createElement("br");
+		
+		 textBox.type = "text";
+		
+		 document.body.appendChild(textBox);
+		 document.body.appendChild(newLine);
+		 } */
+
+		/* var num1 = document.getElementByld("num1");
+		 var num2 = document.getElementByld("num2");
+		 var sum = document.getElementByld("sum");
+		 sum.value=parseInt(num1.value)+parseInt(num2.value); */
+	}
+
+	var color = 'red'; //전역변수
+	function foo() {
+		var color = 'blue';//2 //지역변수
+		function bar() {
+			document.write(color);//1
+		}
+		return bar;
+	}
+	var baz = foo();//3 //클로저
+	baz();//4
+	
+	
+</script>
+</head>
+<body>
+	<!-- <input type="radio" name="color" value="yellow" onclick="colorCh()">노란색<br>
+<input type="radio" name="color" value="green" onclick="colorCh()">녹색<br>
+<input type="radio" name="color" value="blue" onclick="colorCh()">파란색<br>
+<input type="radio" name="color" value="red" onclick="colorCh()">빨간색<br> -->
+
+	<!-- <input type="text" id="num1">+
+<input type="text" id="num2">
+<input type="button" value="=" onclick="add()">
+<input type="text" id="sum"> -->
+
+</body>
+</html>

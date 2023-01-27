@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>정규 표현식 예제</title>
+<script language="javascript">
+
+	function inputName() {
+		//ㄱ~ㅎ, 가~힣의 한글과 2글자에서 5글짜까지만 허용
+		//regex에 대입
+		const regex = new RegExp(/[ㄱ-ㅎ가-힣]{2,5}/);
+		//text의 id를 a로 선언
+		var a = document.getElementById("name");
+		//정규표현식의 결과에 따라 true/false출력
+		alert("정규 표현식" + regex.test(a.value));
+	}
+	function inputEngName() {
+		//a~z, A~Z의 영어허용
+		//regex에 대입
+		const regex = new RegExp(/[a-zA-Z]]+/);
+		//text의 id를 a로 선언
+		var a = document.getElementById("engname");
+		//정규표현식의 결과에 따라 true/false출력
+		alert("정규 표현식" + regex.test(a.value));
+	}
+	function inputPhone() {
+		//02또는010 -포함 3또는4자리 숫자 -포함 4자리 숫자허용
+		//regex에 대입
+		const regex = new RegExp(/(02|010)-\d{3,4}-\d{4}/);
+		//text의 id를 a로 선언
+		var a = document.getElementById("phone");
+		//정규표현식의 결과에 따라 true/false출력
+		alert("정규 표현식" + regex.test(a.value));
+	}
+	function inputEmail() {
+		//한개이상의 알파벳 또는 숫자 @ 한개이상의 알파벳 또는 숫자 . 한개이상의 알파벳 또는 슷자 .이 없거나 한번더 허용
+		//regex에 대입
+		const regex = new RegExp(/\w+@\w+\.\w+(\.\w+)?/);
+		//text의 id를 a로 선언
+		var a = document.getElementById("email");
+		//정규표현식의 결과에 따라 true/false출력
+		alert("정규 표현식" + regex.test(a.value));
+	}
+	
+</script>
+</head>
+<body>
+<h2>정규 표현식 테스트</h2>
+<br>
+이름 (한글로 입력해 주세요)
+<br>
+<input type="text" id="name" size="23">
+<input type="button" id="button" value="입력" onclick="inputName()">
+<br>
+영어 이름 (영어로 입력해 주세요)
+<br>
+<input type="text" id="engname" size="23">
+<input type="button" id="button" value="입력" onclick="inputEngName()">
+<br>
+전화번호 (02/010-3~4숫자-4숫자로 입력해 주세요)
+<br>
+<input type="text" id="phone" size="23">
+<input type="button" id="button" value="입력" onclick="inputPhone()">
+<br>
+이메일 (~@~.~로 입력해 주세요)
+<br>
+<input type="text" id="email" size="23">
+<input type="button" id="button" value="입력" onclick="inputEmail()">
+</body>
+</html>

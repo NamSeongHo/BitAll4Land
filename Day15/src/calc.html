@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+
+<title>계산기</title>
+
+<script language="javascript">
+var num1 = 0;
+var symbol;
+
+function addInput(a) {
+	var textIn = document.getElementById("text");
+		textIn.value += a;
+}
+
+function calculate(b) {
+	var firstTextIn = (document.getElementById("text").value);
+	num1 = firstTextIn;
+	symbol=b;
+	return document.getElementById("text").value = "";
+}
+
+function output() {
+	var secTextIn = parseFloat(document.getElementById("text").value);
+	var result;
+	
+	switch(symbol) {
+	case '+' : result = Number(num1) + Number(secTextIn);
+	document.getElementById("text").value = result;
+	break;
+	
+	case '-' : result = Number(num1) - Number(secTextIn);
+	document.getElementById("text").value = result;
+	break;
+	
+	case '*' : result = Number(num1) * Number(secTextIn);
+	document.getElementById("text").value = result;
+	break;
+	
+	case '/' : result = Number(num1) / Number(secTextIn);
+	document.getElementById("text").value = result;
+	break;
+	
+	case '^' : result = Number(num1) ** Number(secTextIn);
+	document.getElementById("text").value = result;
+	break;
+	}
+}
+
+function plusminus() {
+	num = document.getElementById("text").value;
+	if(Number(num)>0) {
+		document.getElementById("text").value = '-' + num;
+	}
+	else {
+		document.getElementById("text").value = n.replace('-','');
+	}
+}
+
+function dot() {
+	if(document.getElementById("text").value.indexOf('.')==-1) {
+		document.getElementById("text").value += '.';
+	}
+}
+
+function sin() {
+	num = document.getElementById("text").value;
+	document.getElementById("text").value = Math.sin((num * 3.14)/180);
+}
+
+function cos() {
+	num = document.getElementById("text").value;
+	document.getElementById("text").value = Math.cos((num * 3.14)/180);
+} 
+
+function tan() {
+	num = document.getElementById("text").value;
+	document.getElementById("text").value = Math.tan((num * 3.14)/180);
+} 
+
+function clearInput() {
+	document.getElementById("text").value = "";
+	num1=0;
+} 
+</script>
+
+</head>
+<body>
+<input type="text" id="text" size="23">
+<br>
+<input type="button" id="clear" value="Clear" onclick="clearInput()" style="width: 96px; color: blue">
+<input type="button" id="result" value="=" onclick="output()" style="width: 96px; color: blue">
+<br>
+<input type="button" id="one" value="1" onclick="addInput(1)" style="width: 35px; color: blue">
+<input type="button" id="two" value="2" onclick="addInput(2)" style="width: 35px; color: blue">
+<input type="button" id="three" value="3" onclick="addInput(3)" style="width: 35px; color: blue">
+
+<input type="button" id="+" value="+" onclick="calculate('+')" style="width: 35px; color: green">
+<input type="button" id="x^y" value="x^y" onclick="calculate('^')" style="width: 35px; color: red">
+<br>
+<input type="button" id="four" value="4" onclick="addInput(4)" style="width: 35px; color: blue">
+<input type="button" id="fove" value="5" onclick="addInput(5)" style="width: 35px; color: blue">
+<input type="button" id="six" value="6" onclick="addInput(6)" style="width: 35px; color: blue">
+
+<input type="button" id="-" value="-" onclick="calculate('-')" style="width: 35px; color: green">
+<input type="button" id="sin" value="sin" onclick="sin()" style="width: 35px; color: red">
+<br>
+<input type="button" id="seven" value="7" onclick="addInput(7)" style="width: 35px; color: blue">
+<input type="button" id="eight" value="8" onclick="addInput(8)" style="width: 35px; color: blue">
+<input type="button" id="nine" value="9" onclick="addInput(9)" style="width: 35px; color: blue">
+
+<input type="button" id="*" value="*" onclick="calculate('*')" style="width: 35px; color: green">
+<input type="button" id="cos" value="cos" onclick="cos()" style="width: 35px; color: red">
+<br>
+<input type="button" id="zero" value="0" onclick="addInput(0)" style="width: 35px; color: blue">
+<input type="button" id="+/-" value="+/-" onclick="plusminus()" style="width: 35px; color: blue">
+<input type="button" id="." value="." onclick="dot()" style="width: 35px; color: blue">
+
+<input type="button" id="/" value="/" onclick="calculate('/')" style="width: 35px; color: green">
+<input type="button" id="tan" value="tan" onclick="tan()" style="width: 35px; color: red">
+</body>
+</html>

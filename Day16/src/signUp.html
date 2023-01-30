@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원 가입 페이지</title>
+<script language="javascript">
+
+	function allCheck() {
+		if (!idCheck()) {
+			return false;
+		} else if (!pw1Check()) {
+			return false;
+		} else if (!pw2Check()) {
+			return false;
+		} else if (!emailCheck()) {
+			return false;
+		} else if (!nameCheck()) {
+			return false;
+		} else if (!numCheck()) {
+			return false;
+		} else if (!hobbyCheck()) {
+			return false;
+		} else if (!introCheck()) {
+			return false;
+		} else {
+			return true; 
+		}
+	}
+	
+	// 비정규식 유효성 검사
+	function idCheck() {
+		var my_id = document.getElementById("my_id");
+		// 아이디 공백없이 4~12자로만 입력
+		if (my_id == '' || !(my_id.value.length >= 4 && my_id.value.length <= 12)) {
+			alert("아이디를 4~12자로 입력해 주세요.");
+			my_id.focus();
+			return false;
+		}
+		// 아이디 영문 대소문자와 숫자로만 입력
+		else if (!checkEngNumber(my_id.value)) {
+			alert("아이디를 영문 대소문자와 숫자로만 입력해 주세요.");
+			my_id.focus();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function pw1Check() {
+		var my_pw1 = document.getElementById("my_pw1");
+		// 비밀번호 공백없이 4~12자로만 입력
+		if (my_pw1 == ''
+				|| !(my_pw1.value.length >= 4 && my_pw1.value.length <= 12)) {
+			alert("비밀번호를 4~12자로 입력해 주세요.");
+			my_pw1.focus();
+			return false;
+		}
+		// 비밀번호 영문 대소문자와 숫자로만 입력
+		else if (!checkEngNumber(my_pw1.value)) {
+			alert("비밀번호를 영문 대소문자와 숫자로만 입력해 주세요.");
+			my_pw1.focus();
+			return false;
+		}
+		// 아이디와 비밀번호 중복 확인
+		else if (my_pw1.value == my_id.value) {
+			alert("아이디와 비밀번호를 동일하게 사용할 수 없습니다.");
+			my_pw1.focus();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function pw2Check() {
+		var my_pw2 = document.getElementById("my_pw2");
+		// 비밀번호 확인 공백 없이 비밀번호의 입력한 값 동일 유무확인
+		if (my_pw2 == '' || (my_pw2.value !== my_pw1.value)) {
+			alert("비밀번호와 동일하지 않습니다.");
+			my_pw2.focus();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function emailCheck() {
+		var my_email = document.getElementById("my_email");
+		// 이메일 입력 유무확인
+		if (my_email.value.lenth == 0) {
+			alert("이메일을 입력하세요.");
+			my_email.focus();
+			return false;
+		}
+		// my_email값에 @가 없다면(indexOf는 없다면 -1 있다면 문자의 위치를 반환)
+		else if (my_email.value.indexOf("@") == -1 || my_email.value.indexOf(".") == -1 || my_email.value.length <= 5) {
+			alert("잘못된 이메일 형식입니다.");
+			my_email.focus();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function nameCheck() {
+		var my_name = document.getElementById("my_name");
+		// 이름 공백 없이 5글자 이상 입력 유무확인
+		if (my_name.value == "" || my_name.value >= 5) {
+			alert("이름을 최대 5글자 입력하세요.");
+			my_name.focus();
+			return false;
+		}
+		// 한글, 영어만 입력
+		else if (!checkKorEng(my_name.value)) {
+			alert("이름을 한글, 영어만 입력하세요.");
+			my_name.focus();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function birthCheck() {
+		var objBirthYear = document.getElementById("my_birth");
+		var objBirthMonth = document.getElementById("month");
+		var objBirthDay = document.getElementById("day");
+		var objNum = document.getElementById("my_num");
+		
+		objBirthYear.value = "19" + objNum.value.substring(0, 2);
+		objBirthMonth.value=objNum.value.substring(2, 4);
+		objBirthDay.value=objNum.value.substring(4, 6);
+	}
+
+	function introCheck() {
+		var my_intro = document.getElementById("my_intro");
+		// 자기소개 입력 유무확인
+		if (my_intro.value.length <= 10) {
+			alert("자기소개란에 최소 10글자를 입력해 주세요.");
+			//my_intro();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function numCheck() {
+		var my_num = document.getElementById("my_num");
+		return onlynum(my_num);
+		
+	}
+
+	// 문자열이 영어, 숫자인지 확인하는 메서드 
+	function checkEngNumber(value) {
+		var cnt = 0;
+		for (var i = 0; i < value.length; i++) {
+			// A~Z까지 아스키코드
+			if ((value.charCodeAt(i) >= 65 && value.charCodeAt(i) <= 90) || (value.charCodeAt(i) >= 97 && value.charCodeAt(i) <= 122) || (value.charCodeAt(i) >= 48 && value.charCodeAt(i) <= 57)) {
+				// 문자수를 세어준다.
+				cnt += 1;
+			}
+		}
+		// cnt수와 입력한 문자의 길이비교
+		if (cnt == (value.length)) {
+			// 같다면 true
+			return true;
+		} else {
+			// 다르면 false
+			return false;
+		}
+	}
+	// 문자열이 영어, 한글인지 확인하는 메서드 
+	function checkKorEng(value) {
+		var cnt = 0;
+		for (var i = 0; i < value.length; i++) {
+			// A~Z까지 아스키코드
+			if ((value.charCodeAt(i) >= 65 && value.charCodeAt(i) <= 90) || (value.charCodeAt(i) >= 97 && value.charCodeAt(i) <= 122) || (value.charCodeAt(i) >= 44032 && value.charCodeAt(i) <= 55203)) {
+				// 문자수를 세어준다.
+				cnt += 1;
+			}
+		}
+		// cnt수와 입력한 문자의 길이비교
+		if (cnt == (value.length)) {
+			// 같다면 true
+			return true;
+		} else {
+			// 다르면 false
+			return false;
+		}
+	}
+	// 관심분야 체크
+	function hobbyCheck() {
+		let hobby = document.getElementsByName("hobby");
+		var hobbyCount = 0;
+		for (var i = 0; i < hobby.length; i++) {
+			if (hobby[i].checked == true) {
+				hobbyCount++;
+			}
+		}
+		if (hobbyCount >= 2) {
+			return true;
+		}
+		alert("관심분야를 최소 2개를 체크해 주세요.");
+		return false;
+	}
+	// 주민번호 계산
+	function onlynum(onum) {
+		let numplus = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
+		var sum = 0;
+		for (i=0; i<numplus.length; i++) {
+			sum += Number(numplus[i])*Number(onum.value[i]);
+		}
+		//주민번호 계산
+		sum = (11 - (sum % 11)) % 10; 
+		// 계산되서 나온 결과값과 입력한 주민번호의 마지막이 맞지 않으면
+		if (sum != onum.value[12]) {  
+			//alert 창 띄우기
+			alert("주민번호가 올바르지 않습니다."); 
+			return false;
+		}
+		else {
+			// 생일 칸에 년도 넣어준다.
+			birthCheck();
+			return true;
+		}
+	}
+</script>
+</head>
+<body>
+
+<form id="joinForm" name="joinForm" action="mailto:joseph0107@naver.com" method="post" onsubmit="return allCheck();">
+
+
+<table style="margin-right: auto; margin-left: auto" height="" border="1">
+
+<tr>
+<th colspan="2" bgcolor="gray">회원 기본 정보</th>
+</tr>
+
+<tr>
+<td>아이디:</td>
+<td><input type="text" id="my_id" size="12">4~12자의 영문 대소문자와 숫자로만 입력</td>
+</tr>
+
+<tr>
+<td>비밀번호:</td>
+<td><input type="password" id="my_pw1" size="12">4~12자의 영문 대소문자와 숫자로만 입력</td>
+</tr>
+
+<tr>
+<td>비밀번호확인:</td>
+<td><input type="password" id="my_pw2" size="12"></td>
+</tr>
+
+<tr>
+<td>메일주소:</td>
+<td><input type="text" id="my_email" size="20">예) id@domain.com</td>
+</tr>
+
+<tr>
+<td>이름:</td>
+<td><input type="text" id="my_name" size="20"></td>
+</tr>
+
+<tr>
+<th colspan="2" bgcolor="gray">개인 신상 정보</th>
+</tr>
+
+<tr>
+<td>주민등록번호:</td>
+<td><input type="text" id="my_num" size="20">예) 1234561234567</td>
+</tr>
+
+<tr>
+<td>생일:</td>
+<td>
+<input type="text" id="my_birth" size="4">년
+
+<month valign="top">
+<select id="month" name="month">
+<option value="01">01</option>
+<option value="02">02</option>
+<option value="03">03</option>
+<option value="04">04</option>
+<option value="05">05</option>
+<option value="06">06</option>
+<option value="07">07</option>
+<option value="08">08</option>
+<option value="09">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>월
+
+<day valign="top">
+<select id="day" name="day">
+<option value="01">01</option>
+<option value="02">02</option>
+<option value="03">03</option>
+<option value="04">04</option>
+<option value="05">05</option>
+<option value="06">06</option>
+<option value="07">07</option>
+<option value="08">08</option>
+<option value="09">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>일
+</td>
+</tr>
+
+<tr>
+<td>관심분야:</td>
+<td>
+<input type="checkbox" name="hobby" value="컴퓨터">컴퓨터
+<input type="checkbox" name="hobby" value="인터넷">인터넷
+<input type="checkbox" name="hobby" value="여행">여행
+<input type="checkbox" name="hobby" value="영화감상">영화감상
+<input type="checkbox" name="hobby" value="음악감상">음악감상
+</td>
+</tr>
+
+<tr>
+<td>자기소개:</td>
+<td><textarea id="my_intro" cols="20" rows="5"></textarea></td>
+</tr>
+</table>
+	
+<p align="Center">
+<input type="submit" value="회원 가입">
+<input type="reset" value="다시 입력">
+</p>
+
+<audio controls autoplay>
+  <source src="test.mp3" type="audio/mp3">
+</audio>
+
+</form>
+</body>
+</html>
